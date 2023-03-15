@@ -15,7 +15,8 @@ library(scales)
 dados <- readr::read_csv2("~/Trabalho/CGINF/Projetos_R/Taxa_de_reposicao/data-raw/taxa.csv") |> 
   janitor::clean_names() |> 
   dplyr::mutate(Taxa = round((ingressos/saidas), digits =  2), 
-                ano = as.factor(ano)) 
+                ano = as.factor(ano), 
+                saidas = saidas * -1) 
 
 
 ```
@@ -61,8 +62,8 @@ e1 <- dados |>
     height = 400,
     elementId = "chart1" # specify id
   ) |> 
-  e_bar(ingressos, name = "Ingressos") |> 
-  e_bar(saidas, name = "Saídas") |>  
+  e_bar(ingressos, name = "Ingressos",stack = "grp") |> 
+  e_bar(saidas, name = "Saídas", stack = "grp") |>  
   #e_datazoom(show = FALSE) |>  # hide
   echarts4r::e_legend(right = 0) |>
   e_y_axis(formatter = e_axis_formatter(style = "decimal", digits = 3)) |>
